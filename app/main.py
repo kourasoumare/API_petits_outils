@@ -1,9 +1,12 @@
 from fastapi import FastAPI
+from app.routes import conversion
 
 app = FastAPI(
     title="API de petits outils",
     version="0.1.0",
 )
+
+app.include_router(conversion.router)
 
 
 @app.get("/sante")
