@@ -36,4 +36,27 @@ def route_est_premier(n: int):
         return {"resultat": est_premier(n)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur))
-    
+
+
+def pgcd(a, b):
+    if (
+        not isinstance(a, int)
+        or not isinstance(b, int)
+        or a <= 0
+        or b <= 0
+    ):
+        raise ValueError("a et b doivent être des entiers strictement positifs")
+    resultat = 1 
+    for  d in range(1 , min(a,b)+1):
+        if  a % d == 0 and b % d == 0:
+            resultat = d
+    return resultat 
+
+@router.get("/pgcd/{a}/{b}") 
+def route_pgcd(a: int,b: int):
+    try:
+        return {"resultat": pgcd(a,b)}
+    except ValueError as erreur:
+        raise HTTPException(status_code=400, detail=str(erreur))
+           
+        
