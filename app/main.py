@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from app.texte import router as texte_router
 from app.math import router as math_router
+from app.texte import router as texte_router
 
 app = FastAPI(
     title="API de petits outils",
