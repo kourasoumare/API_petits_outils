@@ -1,9 +1,13 @@
 from fastapi import FastAPI
 
+from app.texte import router as texte_router
+
 app = FastAPI(
     title="API de petits outils",
     version="0.1.0",
 )
+
+app.include_router(texte_router)
 
 
 @app.get("/sante")
