@@ -21,11 +21,11 @@ def test_factorielle_erreur():
 
 
 def test_route_factorielle_normal():
-    reponse = client.get("/factorielle/5")
+    reponse = client.get("/math/factorielle/5")
     assert reponse.status_code == 200
     assert reponse.json() == {"resultat": 120}
 
 
 def test_route_factorielle_erreur():
-    reponse = client.get("/factorielle/-1")
+    reponse = client.get("/math/factorielle/-1")
     assert reponse.status_code == 400
