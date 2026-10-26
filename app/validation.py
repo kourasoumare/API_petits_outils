@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(prefix="/validation", tags=["validation"])
 
 EMAIL_VIDE = "L'email ne peut pas être vide."
+MDP_VIDE = "Le mot de passe ne peut pas être vide."
 
 _EMAIL_RE = re.compile(
     r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$"
@@ -23,9 +24,31 @@ def email_valide(email: str) -> bool:
     return bool(_EMAIL_RE.match(email))
 
 
+def mdp_robuste(mdp: str) -> bool:
+    """Vrai si le mot de passe a au moins 8 caractères, une majuscule,
+    une minuscule, un chiffre et un caractère spécial."""
+    if not mdp or not mdp.strip():
+        raise ValueError(MDP_VIDE)
+    return (
+        len(mdp) >= 8
+        and any(c.isupper() for c in mdp)
+        and any(c.islower() for c in mdp)
+        and any(c.isdigit() for c in mdp)
+        and any(not c.isalnum() for c in mdp)
+    )
+
+
 @router.get("/email/{valeur}")
 def route_email_valide(valeur: str):
     try:
         return {"resultat": email_valide(valeur)}
+    except ValueError as erreur:
+        raise HTTPException(status_code=400, detail=str(erreur))
+
+
+@router.get("/mdp/{valeur}")
+def route_mdp_robuste(valeur: str):
+    try:
+        return {"resultat": mdp_robuste(valeur)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur))
