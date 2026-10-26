@@ -13,3 +13,4 @@ def test_sante_renvoie_code_200():
 def test_sante_renvoie_statut_ok():
     reponse = client.get("/sante")
     assert reponse.json() == {"statut": "ok"}
+ 
