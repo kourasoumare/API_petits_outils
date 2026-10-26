@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.texte import router as texte_router
+from app.math import router as math_router
 
 app = FastAPI(
     title="API de petits outils",
@@ -10,6 +11,7 @@ app = FastAPI(
 app.include_router(texte_router)
 
 
+app.include_router(math_router)
 @app.get("/sante")
 def sante() -> dict[str, str]:
     """Indique que l'API est démarrée et répond."""
