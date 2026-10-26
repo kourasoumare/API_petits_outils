@@ -24,7 +24,7 @@ def email_valide(email: str) -> bool:
 
 
 @router.get("/email/{valeur}")
-def route_email_valide(valeur: str):
+def route_email_valide(valeur: str) -> dict[str, bool]:
     try:
         return {"resultat": email_valide(valeur)}
     except ValueError as erreur:
