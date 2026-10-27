@@ -2,11 +2,12 @@ from fastapi import APIRouter, HTTPException
 
 router = APIRouter(prefix="/texte", tags=["texte"])
 
+VOYELLES = "aeiouyàâäéèêëîïôöùûüÿ"
 
-# Fonctions
+
+# --- Fonctions ---
 
 
-# inverser une chaîne de caractères
 def inverser(mot: str) -> str:
     """Renvoie le texte lu de droite à gauche. Lève une erreur si le texte est invalide."""
     if not isinstance(mot, str):
@@ -19,7 +20,6 @@ def inverser(mot: str) -> str:
         return mot[::-1]
 
 
-# palindrome
 def est_palindrome(mot: str) -> bool:
     """Indique si le texte se lit pareil dans les deux sens, sans tenir compte des majuscules ni des espaces."""
     if not isinstance(mot, str):
@@ -28,7 +28,16 @@ def est_palindrome(mot: str) -> bool:
     return texte_nettoye == inverser(texte_nettoye)
 
 
-# Routes
+def compter_voyelles(mot: str) -> int:
+    """Renvoie le nombre de voyelles du texte, accentuées comprises, sans tenir compte des majuscules."""
+    if not isinstance(mot, str):
+        raise TypeError("Le mot doit être une chaîne de caractères.")
+    elif mot.strip() == "":
+        raise ValueError("Le mot ne peut pas être vide.")
+    return sum(1 for lettre in mot.lower() if lettre in VOYELLES)
+
+
+# --- Routes ---
 
 
 @router.get("/inverser")
@@ -45,5 +54,14 @@ def route_est_palindrome(texte: str) -> dict[str, bool]:
     """Indique si le texte reçu dans l'adresse (?texte=...) est un palindrome."""
     try:
         return {"resultat": est_palindrome(texte)}
+    except ValueError as erreur:
+        raise HTTPException(status_code=400, detail=str(erreur)) from erreur
+
+
+@router.get("/compter_voyelles")
+def route_compter_voyelles(texte: str) -> dict[str, int]:
+    """Compte les voyelles du texte reçu dans l'adresse (?texte=...)."""
+    try:
+        return {"resultat": compter_voyelles(texte)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur)) from erreur
