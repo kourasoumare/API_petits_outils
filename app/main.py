@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.conversion import router as conversion_router
 from app.math import router as math_router
 from app.texte import router as texte_router
+from app.validation import router as validation_router
 
 app = FastAPI(
     title="API de petits outils",
@@ -12,6 +13,8 @@ app = FastAPI(
 app.include_router(conversion_router)
 app.include_router(texte_router)
 app.include_router(math_router)
+app.include_router(validation_router)
+
 
 
 @app.get("/sante")
