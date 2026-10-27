@@ -34,7 +34,6 @@ def euros_devise(montant: float, devise: str) -> float:
     return round(montant * TAUX_EURO[devise], 2)
 
 
-
 # Routes
 
 
