@@ -39,3 +39,20 @@ def route_est_premier(n: int) -> dict[str, bool]:
         return {"resultat": est_premier(n)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur))
+
+
+def pgcd(a: int, b: int) -> int:
+    """Renvoie le plus grand diviseur commun de a et b, en levant ValueError si a ou b n'est pas un entier strictement positif."""
+    if not isinstance(a, int) or not isinstance(b, int) or a <= 0 or b <= 0:
+        raise ValueError("a et b doivent être des entiers strictement positifs")
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+
+@router.get("/pgcd/{a}/{b}")
+def route_pgcd(a: int, b: int) -> dict[str, int]:
+    try:
+        return {"resultat": pgcd(a, b)}
+    except ValueError as erreur:
+        raise HTTPException(status_code=400, detail=str(erreur))
