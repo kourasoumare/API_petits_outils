@@ -38,3 +38,19 @@ def test_km_miles_limite():
 def test_km_miles_erreur():
     r = client.get("/conversion/km_miles", params={"km": -5})
     assert r.status_code == 400
+
+def test_euros_devise_normal():
+    r = client.get("/conversion/euros_devise", params={"montant": 100, "devise": "USD"})
+    assert r.status_code == 200
+    assert r.json()["montant_converti"] == 108.0
+
+
+def test_euros_devise_limite():
+    r = client.get("/conversion/euros_devise", params={"montant": 0, "devise": "usd"})
+    assert r.status_code == 200
+    assert r.json()["montant_converti"] == 0
+
+
+def test_euros_devise_erreur():
+    r = client.get("/conversion/euros_devise", params={"montant": 100, "devise": "XYZ"})
+    assert r.status_code == 400
