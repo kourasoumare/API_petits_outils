@@ -19,3 +19,23 @@ def route_factorielle(n: int):
         return {"resultat": factorielle(n)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur))
+
+
+def est_premier(n: int) -> bool:
+    """Renvoie True si n est un nombre premier et False sinon, en levant ValueError si n n'est pas un entier positif ou nul."""
+    if not isinstance(n, int) or n < 0:
+        raise ValueError("n doit être un entier positif ou nul")
+    if n < 2:
+        return False
+    for d in range(2, int(n**0.5) + 1):
+        if n % d == 0:
+            return False
+    return True
+
+
+@router.get("/est_premier/{n}")
+def route_est_premier(n: int) -> dict[str, bool]:
+    try:
+        return {"resultat": est_premier(n)}
+    except ValueError as erreur:
+        raise HTTPException(status_code=400, detail=str(erreur))
