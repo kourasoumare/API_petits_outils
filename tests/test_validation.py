@@ -23,13 +23,13 @@ def test_email_valide_erreur():
 
 
 def test_route_email_valide_normal():
-    reponse = client.get("/validation/email/nassira@hetic.net")
+    reponse = client.get("/validation/email_valide/nassira@hetic.net")
     assert reponse.status_code == 200
     assert reponse.json() == {"resultat": True}
 
 
 def test_route_email_valide_erreur():
-    reponse = client.get("/validation/email/%20")
+    reponse = client.get("/validation/email_valide/%20")
     assert reponse.status_code == 400
 
 
@@ -51,13 +51,19 @@ def test_mdp_robuste_erreur():
 
 
 def test_route_mdp_robuste_normal():
-    reponse = client.get("/validation/mdp/Abcdef1!")
+    reponse = client.get("/validation/mdp_robuste", params={"mdp": "Abcdef1!"})
+    assert reponse.status_code == 200
+    assert reponse.json() == {"resultat": True}
+
+
+def test_route_mdp_robuste_avec_slash():
+    reponse = client.get("/validation/mdp_robuste", params={"mdp": "Abc/def1!"})
     assert reponse.status_code == 200
     assert reponse.json() == {"resultat": True}
 
 
 def test_route_mdp_robuste_erreur():
-    reponse = client.get("/validation/mdp/%20")
+    reponse = client.get("/validation/mdp_robuste", params={"mdp": " "})
     assert reponse.status_code == 400
 
 
@@ -78,11 +84,11 @@ def test_code_postal_erreur():
 
 
 def test_route_code_postal_normal():
-    reponse = client.get("/validation/code-postal/75001")
+    reponse = client.get("/validation/code_postal/75001")
     assert reponse.status_code == 200
     assert reponse.json() == {"resultat": True}
 
 
 def test_route_code_postal_erreur():
-    reponse = client.get("/validation/code-postal/%20")
+    reponse = client.get("/validation/code_postal/%20")
     assert reponse.status_code == 400

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.conversion import router as conversion_router
 from app.math import router as math_router
 from app.texte import router as texte_router
 from app.validation import router as validation_router
@@ -9,8 +10,9 @@ app = FastAPI(
     version="0.1.0",
 )
 
-app.include_router(math_router)
+app.include_router(conversion_router)
 app.include_router(texte_router)
+app.include_router(math_router)
 app.include_router(validation_router)
 
 

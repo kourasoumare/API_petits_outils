@@ -50,7 +50,7 @@ def code_postal(code: str) -> bool:
     return not code.startswith("00")
 
 
-@router.get("/email/{valeur}")
+@router.get("/email_valide/{valeur}")
 def route_email_valide(valeur: str) -> dict[str, bool]:
     try:
         return {"resultat": email_valide(valeur)}
@@ -58,15 +58,15 @@ def route_email_valide(valeur: str) -> dict[str, bool]:
         raise HTTPException(status_code=400, detail=str(erreur))
 
 
-@router.get("/mdp/{valeur}")
-def route_mdp_robuste(valeur: str) -> dict[str, bool]:
+@router.get("/mdp_robuste")
+def route_mdp_robuste(mdp: str) -> dict[str, bool]:
     try:
-        return {"resultat": mdp_robuste(valeur)}
+        return {"resultat": mdp_robuste(mdp)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur))
 
 
-@router.get("/code-postal/{valeur}")
+@router.get("/code_postal/{valeur}")
 def route_code_postal(valeur: str) -> dict[str, bool]:
     try:
         return {"resultat": code_postal(valeur)}
