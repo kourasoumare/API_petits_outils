@@ -54,3 +54,7 @@ def test_euros_devise_limite():
 def test_euros_devise_erreur():
     r = client.get("/conversion/euros_devise", params={"montant": 100, "devise": "XYZ"})
     assert r.status_code == 400
+
+def test_euros_devise_montant_negatif():
+    r = client.get("/conversion/euros_devise", params={"montant": -10, "devise": "USD"})
+    assert r.status_code == 400
