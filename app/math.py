@@ -27,14 +27,14 @@ def est_premier(n: int) -> bool:
         raise ValueError("n doit être un entier positif ou nul")
     if n < 2:
         return False
-    for d in range(2, n):
+    for d in range(2, int(n**0.5) + 1):
         if n % d == 0:
             return False
     return True
 
 
 @router.get("/est_premier/{n}")
-def route_est_premier(n: int):
+def route_est_premier(n: int) -> dict[str, bool]:
     try:
         return {"resultat": est_premier(n)}
     except ValueError as erreur:
