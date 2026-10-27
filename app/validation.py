@@ -51,7 +51,7 @@ def code_postal(code: str) -> bool:
 
 
 @router.get("/email/{valeur}")
-def route_email_valide(valeur: str):
+def route_email_valide(valeur: str) -> dict[str, bool]:
     try:
         return {"resultat": email_valide(valeur)}
     except ValueError as erreur:
@@ -59,7 +59,7 @@ def route_email_valide(valeur: str):
 
 
 @router.get("/mdp/{valeur}")
-def route_mdp_robuste(valeur: str):
+def route_mdp_robuste(valeur: str) -> dict[str, bool]:
     try:
         return {"resultat": mdp_robuste(valeur)}
     except ValueError as erreur:
