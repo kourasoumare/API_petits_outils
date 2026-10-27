@@ -34,35 +34,32 @@ def euros_devise(montant: float, devise: str) -> float:
     return round(montant * TAUX_EURO[devise], 2)
 
 
+
 # Routes
 
 
 @router.get("/celsius_fahrenheit")
-def route_celsius_fahrenheit(celsius: float):
+def route_celsius_fahrenheit(celsius: float) -> dict[str, float]:
     """Convertit la température reçue dans l'adresse (?celsius=...)."""
     try:
-        return {"celsius": celsius, "fahrenheit": celsius_fahrenheit(celsius)}
+        return {"resultat": celsius_fahrenheit(celsius)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur)) from erreur
 
 
 @router.get("/km_miles")
-def route_km_miles(km: float):
+def route_km_miles(km: float) -> dict[str, float]:
     """Convertit la distance reçue dans l'adresse (?km=...)."""
     try:
-        return {"km": km, "miles": km_miles(km)}
+        return {"resultat": km_miles(km)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur)) from erreur
 
 
 @router.get("/euros_devise")
-def route_euros_devise(montant: float, devise: str):
+def route_euros_devise(montant: float, devise: str) -> dict[str, float]:
     """Convertit le montant reçu dans l'adresse (?montant=...&devise=...)."""
     try:
-        return {
-            "euros": montant,
-            "devise": devise.upper(),
-            "montant_converti": euros_devise(montant, devise),
-        }
+        return {"resultat": euros_devise(montant, devise)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur)) from erreur
