@@ -23,7 +23,7 @@ def email_valide(email: str) -> bool:
     return bool(_EMAIL_RE.match(email))
 
 
-@router.get("/email/{valeur}")
+@router.get("/email_valide/{valeur}")
 def route_email_valide(valeur: str) -> dict[str, bool]:
     try:
         return {"resultat": email_valide(valeur)}
