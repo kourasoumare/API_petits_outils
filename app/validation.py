@@ -67,7 +67,7 @@ def route_mdp_robuste(valeur: str) -> dict[str, bool]:
 
 
 @router.get("/code-postal/{valeur}")
-def route_code_postal(valeur: str):
+def route_code_postal(valeur: str) -> dict[str, bool]:
     try:
         return {"resultat": code_postal(valeur)}
     except ValueError as erreur:
