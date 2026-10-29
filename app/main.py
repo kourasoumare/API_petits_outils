@@ -16,7 +16,6 @@ app.include_router(math_router)
 app.include_router(validation_router)
 
 
-
 @app.get("/sante")
 def sante() -> dict[str, str]:
     """Indique que l'API est démarrée et répond."""
