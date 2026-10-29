@@ -8,10 +8,12 @@ router = APIRouter(prefix="/validation", tags=["validation"])
 
 EMAIL_VIDE = "L'email ne peut pas être vide."
 MDP_VIDE = "Le mot de passe ne peut pas être vide."
+CODE_POSTAL_VIDE = "Le code postal ne peut pas être vide."
 
 _EMAIL_RE = re.compile(
     r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$"
 )
+_CODE_POSTAL_RE = re.compile(r"^\d{5}$")
 
 
 def email_valide(email: str) -> bool:
@@ -38,6 +40,16 @@ def mdp_robuste(mdp: str) -> bool:
     )
 
 
+def code_postal(code: str) -> bool:
+    """Vrai si le code postal français est valide : 5 chiffres, sans commencer par 00."""
+    if not code or not code.strip():
+        raise ValueError(CODE_POSTAL_VIDE)
+    code = code.strip()
+    if not _CODE_POSTAL_RE.match(code):
+        return False
+    return not code.startswith("00")
+
+
 @router.get("/email_valide/{valeur}")
 def route_email_valide(valeur: str) -> dict[str, bool]:
     try:
@@ -50,5 +62,13 @@ def route_email_valide(valeur: str) -> dict[str, bool]:
 def route_mdp_robuste(mdp: str) -> dict[str, bool]:
     try:
         return {"resultat": mdp_robuste(mdp)}
+    except ValueError as erreur:
+        raise HTTPException(status_code=400, detail=str(erreur))
+
+
+@router.get("/code_postal/{valeur}")
+def route_code_postal(valeur: str) -> dict[str, bool]:
+    try:
+        return {"resultat": code_postal(valeur)}
     except ValueError as erreur:
         raise HTTPException(status_code=400, detail=str(erreur))
